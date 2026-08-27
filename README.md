@@ -6,7 +6,7 @@ An end-to-end, event-driven serverless architecture built on AWS that automates 
 
 ## 🏗️ Architecture Overview
 
-![Architecture Diagram](./project-architecture.drawio.png)
+![Architecture Diagram](./serverless-diagram.drawio.png)
 
 The system processes images through an asynchronous event-driven workflow:
 
