@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# OS Specific Files
+.DS_Store
+Thumbs.db
+
+# IDE Files
+.vscode/
+.idea/
+
+# AWS SAM / CDK Local Build Artifacts
+.aws-sam/
+.cdk.staging/
+cdk.out/
+
+# Environment Variables & Secrets
+.env
+*.pem
