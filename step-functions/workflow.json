@@ -1,0 +1,69 @@
+{
+  "Comment": "Image Processing Pipeline Workflow",
+  "StartAt": "Validate Image",
+  "States": {
+    "Validate Image": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:eu-west-1:146445314795:function:Img-Validate:$LATEST",
+        "Payload.$": "$"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Send Failure Alert"
+        }
+      ],
+      "Next": "Resize and Watermark"
+    },
+    "Resize and Watermark": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:eu-west-1:146445314795:function:Img-ResizeAndWatermark:$LATEST",
+        "Payload.$": "$"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Send Failure Alert"
+        }
+      ],
+      "Next": "Save Metadata"
+    },
+    "Save Metadata": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:eu-west-1:146445314795:function:Img-ExtractAndSaveMetadata:$LATEST",
+        "Payload.$": "$"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Send Failure Alert"
+        }
+      ],
+      "End": true
+    },
+    "Send Failure Alert": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:eu-west-1:146445314795:ImageProcessingAlerts",
+        "Message": "Image processing workflow failed."
+      },
+      "End": true
+    }
+  }
+}
